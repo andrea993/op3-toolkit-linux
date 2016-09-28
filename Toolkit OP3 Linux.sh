@@ -3,13 +3,13 @@
 PKG_OK=$(dpkg-query -W --showformat='${Status}\n' android-tools-adb|grep "install ok installed")
 echo Checking if android-tools-adb is installed: $PKG_OK
 if [ "" == "$PKG_OK" ]; then
-  echo "The package is not installed. Installing."
+  echo "The package android-tools-adb is missing. Type your password for install it."
   sudo apt --force-yes --yes install android-tools-adb
 fi
 PKG_OK=$(dpkg-query -W --showformat='${Status}\n' android-tools-fastboot|grep "install ok installed")
 echo Checking if android-tools-fastboot is installed: $PKG_OK
 if [ "" == "$PKG_OK" ]; then
-  echo "The package is not installed. Installing"
+  echo "The package android-tools-fastboot is missing. Type your password for install it."
   sudo apt --force-yes --yes install android-tools-fastboot
 fi
 #Restarting adb server.
@@ -33,9 +33,50 @@ do
 			;;
 		"Restore Data Your Device")
 			echo "You chose to restore the device"
+			echo "The backup will be restored from your file toolkit"
+			adb restore backup.ab
+			echo "Done!"
+			read -p "Press [Enter] key..."
+			break
 			;;
 		"Unlock - ReLock Bootloader")
-			echo "You chose to relock bootloader"
+			echo "You chose to unlock or relock bootloader"
+			PS3='You want to unlock or relock bootloader?'
+			options=("Unlock bootloader" "Relock bootloader" "Exit")
+			select opt in "${options[@]}"
+			do
+				case $opt in
+					"Unlock bootloader")
+						clear
+						echo "You chose to unlock bootloader"
+						echo "ATTENTION! This operation will wipe all of your data! Make sure you have a backup."
+						read -p "If you are sure, press [Enter] key..."
+						echo "Please wait"
+#FIXME adb commands under linux must be done on high privileges. The better way: sudo $(which fastboot) [command].
+						adb reboot bootloader
+						fastboot oem unlock
+						echo "Follow on screen instructions, and you have done."
+						read -p "Press [Enter] key..."
+						break
+						;;
+					"Relock bootloader")
+						clear
+						echo "You chose to relock bootloader"
+						echo "ATTENTION! This operation will wipe all of your data! Make sure you have a backup."
+						read -p "If you are sure, press [Enter] key..."
+						echo "Please wait"
+						adb reboot bootloader
+						fastboot oem lock
+						echo "Follow on screen instructions, and you have done."
+						read -p "Press [Enter] key..."
+						break
+						;;
+					"Exit")
+						break
+						;;
+					*) echo Invalid option.;;
+				esac
+			done
 			;;
 		"Check Device Status")
 			echo "You chose to check device status"
@@ -79,4 +120,3 @@ do
 		*) echo Invalid option. Type a number from 1 to 16 please.;;
 	esac
 done
-
