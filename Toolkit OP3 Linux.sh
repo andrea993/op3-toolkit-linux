@@ -20,7 +20,7 @@ clear
 #WIP
 #Let's show the menu, and perform the operations.
 PS3='Enter a number to select an operation: '
-options=("Backup Data Your Device" "Restore Data Your Device" "Unlock Bootloader" "Relock Bootloader" "Check Bootloader Status" "Flash TWRP Recovery" "Boot TWRP Recovery" "Flash Stock Recovery" "Push SuperSU" "Push OxygenOS Debloater" "Reboot Mene" "Wipe Cache Device" "Force Decryption Device [WIPE]" "Change LCD Density On Device" "XDA Thread" "Exit")
+options=("Backup Data Your Device" "Restore Data Your Device" "Unlock Bootloader" "Relock Bootloader" "Check Bootloader Status" "Flash TWRP Recovery" "Boot TWRP Recovery" "Flash Stock Recovery" "Push SuperSU" "Push OxygenOS Debloater" "Wipe Cache Device" "Force Decryption Device [WIPE]" "Change LCD Density On Device" "XDA Thread" "Exit")
 select opt in "${options[@]}"
 do
 	case $opt in
@@ -136,22 +136,32 @@ do
 			break
 			;;
 		"Push OxygenOS Debloater")
+			clear
 			echo "You chose to push OxygenOS debloater"
-			;;
-		"Reboot Mene")
-			echo "You chose to reboot mene"
+			read -p "Press [Enter] key..."
+			adb push OOS_Debloat.zip /sdcard/
+			echo "Done!"
+			echo "Rebooting in recovery mode..."
+			adb reboot recovery
+			read -p "If your device is in recovery mode Press [Enter] key..."
+			echo "Now flash OOS_Debloat.zip file, and you have done!"
+			read -p "Press [Enter] key..."
+			break
 			;;
 		"Wipe Cache Device")
+			clear
 			echo "You chose to wipe cache of the device"
-			;;
-		"Force Decryption Device [WIPE]")
-			echo "You chose to force decryption on the device"
-			;;
-		"Change LCD Density On Device")
-			echo "You chose to change LCD density"
-			;;
-		"XDA Thread")
-			echo "You chose to visit XDA thread"
+			echo "Do you really want to wipe cache?"
+			read -p "Press [Enter] key..."
+			clear
+			echo "Rebooting in fastboot mode..."
+			adb reboot bootloader
+			read -p "If your device is in fastboot mode Press [Enter] key..."
+			clear
+			fastboot format cache
+			echo "Done!"
+			read -p "Press [Enter] key..."
+			break
 			;;
 		"Exit")
 			break
