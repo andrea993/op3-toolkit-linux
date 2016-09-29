@@ -20,7 +20,7 @@ clear
 #WIP
 #Let's show the menu, and perform the operations.
 PS3='Enter a number to select an operation: '
-options=("Backup Data Your Device" "Restore Data Your Device" "Unlock Bootloader" "Relock Bootloader" "Check Bootloader Status" "Flash TWRP Recovery" "Boot TWRP Recovery" "Flash Stock Recovery" "Push SuperSU" "Push OxygenOS Debloater" "Wipe Cache Device" "Force Decryption Device [WIPE]" "Change LCD Density On Device" "XDA Thread" "Exit")
+options=("Backup Data Your Device" "Restore Data Your Device" "Unlock Bootloader" "Relock Bootloader" "Check Bootloader Status" "Flash TWRP Recovery" "Boot TWRP Recovery" "Flash Stock Recovery" "Push SuperSU" "Push OxygenOS Debloater" "Wipe Cache Device" "Exit")
 select opt in "${options[@]}"
 do
 	case $opt in
