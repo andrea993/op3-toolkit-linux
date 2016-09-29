@@ -1,23 +1,17 @@
 #!/bin/bash
-#Checking if android-tools packages are installed. If not, install.
-PKG_OK=$(dpkg-query -W --showformat='${Status}\n' android-tools-adb|grep "install ok installed")
-echo Checking if android-tools-adb is installed: $PKG_OK
-if [ "" == "$PKG_OK" ]; then
-  echo "The package android-tools-adb is missing. Type your password for install it."
-  sudo apt --force-yes --yes install android-tools-adb
+#Checking if android-tools packages are installed.
+if [ -z "$(which adb 2> /dev/null)" ] ; then
+  echo ADB is missing. Keep in mind that this script wont work without it. Please install it using: sudo apt install android-tools-adb
+read -p "Press [Enter] key..."
 fi
-PKG_OK=$(dpkg-query -W --showformat='${Status}\n' android-tools-fastboot|grep "install ok installed")
-echo Checking if android-tools-fastboot is installed: $PKG_OK
-if [ "" == "$PKG_OK" ]; then
-  echo "The package android-tools-fastboot is missing. Type your password for install it."
-  sudo apt --force-yes --yes install android-tools-fastboot
+if [ -z "$(which fastboot 2> /dev/null)" ] ; then
+  echo fastboot is missing. Keep in mind that this script wont work without it. Please install it using: sudo apt install android-tools-fastboot
+read -p "Press [Enter] key..."
 fi
 #Restarting adb server.
 adb kill-server
 adb start-server
 clear
-#Checking the connection type.
-#WIP
 #Let's show the menu, and perform the operations.
 PS3='Enter a number to select an operation: '
 options=("Backup Data Your Device" "Restore Data Your Device" "Unlock Bootloader" "Relock Bootloader" "Check Bootloader Status" "Flash TWRP Recovery" "Boot TWRP Recovery" "Flash Stock Recovery" "Push SuperSU" "Push OxygenOS Debloater" "Wipe Cache Device" "Exit")
