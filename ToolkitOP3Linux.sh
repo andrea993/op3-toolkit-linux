@@ -1,12 +1,12 @@
 #!/bin/bash
 #Checking if android-tools packages are installed.
 if [ -z "$(which adb 2> /dev/null)" ] ; then
-  echo ADB is missing. Keep in mind that this script wont work without it. Please install it using: sudo apt install android-tools-adb
-read -p "Press [Enter] key..."
+	echo ADB is missing. Keep in mind that this script wont work without it. Please install it using: sudo apt install android-tools-adb
+	read -p "Press [Enter] key..."
 fi
 if [ -z "$(which fastboot 2> /dev/null)" ] ; then
-  echo fastboot is missing. Keep in mind that this script wont work without it. Please install it using: sudo apt install android-tools-fastboot
-read -p "Press [Enter] key..."
+	echo fastboot is missing. Keep in mind that this script wont work without it. Please install it using: sudo apt install android-tools-fastboot
+	read -p "Press [Enter] key..."
 fi
 #Restarting adb server.
 adb kill-server
